@@ -1,10 +1,13 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+
+const userRoutes = require('./routes/user');
 
 const app = express();
 
-app.use((req, res) => {
-  res.send('Hello world');
-});
+app.use(bodyParser.json());
+
+app.use('/',userRoutes);
 
 app.listen(3000, (err) => {
   if (err) {
