@@ -23,13 +23,16 @@ userAuth.hasMany(userPost, {
 
 // routes
 const userRoutes = require('./routes/user');
+const generalRoutes = require('./routes/general');
 
 const app = express();
 
+// used to parse json data that comes in body of any request
 app.use(bodyParser.json());
 
 // routing
-app.use('/', userRoutes);
+app.use('/user', userRoutes);
+app.use('/', generalRoutes);
 
 /**
  * connect with databse and if connection is success only then will listen on port 3000.
