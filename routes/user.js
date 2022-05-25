@@ -1,6 +1,8 @@
 const express = require('express');
 
-const { getHome, getUserPosts, getUser, addNewPost } = require('../controller/user');
+const {
+  getHome, getUserPosts, getUser, addNewPost,
+} = require('../controller/user');
 
 const router = express.Router();
 
