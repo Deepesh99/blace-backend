@@ -10,7 +10,7 @@ const router = express.Router();
 router.get('/', getHome);
 
 // show all posts that user has made
-router.get('/user/post', getUserPosts);
+router.get('/posts', getUserPosts);
 
 // show user profile
 router.get('/user', getUser);
@@ -19,5 +19,3 @@ router.get('/user', getUser);
 router.post('/add-post', addNewPost);
 
 module.exports = router;
-
-
