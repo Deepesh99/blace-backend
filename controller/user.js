@@ -1,3 +1,6 @@
+const User = require('../model/user');
+const UserPost = require('../model/userPost');
+
 /**
  * Fetch latest 5 posts from database created by user.
  * If authorized then latest posts of user else home page of website.
@@ -47,8 +50,26 @@ exports.getUser = (req, res) => {
  * @param {*} req
  * @param {*} res
  */
-exports.addNewPost = (req, res) => {
+exports.addNewPost = async (req, res) => {
   // identify user
-  // create new db item in "blogpost" table
-  // return
+  const {
+    title, userId, content, status,
+  } = req.body;
+
+  try {
+    // create new db item in "blogpost" table
+    // const user = await User.findOne({ where: { userId } });
+
+    await UserPost.create({
+      title,
+      author: 'deepesh',
+      content,
+      status,
+    });
+
+    // return
+    return res.status(200).json({ status: true, message: 'Success!' });
+  } catch (err) {
+    return res.status(500).json({ status: false, message: 'Server Error' });
+  }
 };
