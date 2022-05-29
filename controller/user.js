@@ -39,10 +39,13 @@ exports.getUserPosts = (req, res) => {
  * @param {*} res
  * @returns JSON value with user information
  */
-exports.getUser = (req, res) => {
+exports.getUser = async (req, res) => {
   // identify user
+  //const userId = res.locals.userId;
   // fetch user info
+  const user = await User.findOne({ where: { userId: res.locals.userId } });
   // return
+  res.json(user.dataValues);
 };
 
 /**

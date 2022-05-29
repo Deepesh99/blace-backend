@@ -3,6 +3,7 @@ const express = require('express');
 const {
   getHome, getUserPosts, getUser, addNewPost,
 } = require('../controller/user');
+const { authorization } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ router.get('/', getHome);
 router.get('/posts', getUserPosts);
 
 // show user profile
-router.get('/user', getUser);
+router.get('/:userId', authorization, getUser);
 
 // add a new post
 router.post('/add-post', addNewPost);
