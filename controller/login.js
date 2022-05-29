@@ -2,19 +2,24 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const UserAuth = require('../model/userAuth');
+const User = require('../model/user');
 
 /**
  * This function takes user email checks with db; if new then register
  *   as new user in system with hashed password in database.
  * bcrypt used to hash password
  * @param {*} req
+ * @param {firstName} req.firstName - firstName given
+ * @param {lastName} req.lastName - lastName given
  * @param {email} req.email - email given by user on registering
  * @param {password} req.password - password set by user on registering
  * @param {*} res
  * @returns json - if user exist then status as false else true.
  */
 exports.register = async (req, res) => {
-  const { email, password } = req.body;
+  const {
+    firstName, lastName, email, password,
+  } = req.body;
 
   try {
     // Checks in database if email exists
@@ -29,10 +34,17 @@ exports.register = async (req, res) => {
     const salt = await bcrypt.genSalt(11);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // email and hashed password is stored in database
-    await UserAuth.create({
+    // email and hashed password is stored in UserAuth model
+    const newUser = await UserAuth.create({
       email,
       password: hashedPassword,
+    });
+
+    // other non critical data stored in user model simultaneously
+    await User.create({
+      firstName,
+      lastName,
+      userId: newUser.id,
     });
 
     return res.status(200).json({ status: true, message: 'Registration Success' });
