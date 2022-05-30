@@ -11,12 +11,12 @@ const router = express.Router();
 router.get('/', getHome);
 
 // show all posts that user has made
-router.get('/posts', getUserPosts);
+router.get('/posts', authorization, getUserPosts);
 
 // show user profile
 router.get('/:userId', authorization, getUser);
 
 // add a new post
-router.post('/add-post', addNewPost);
+router.post('/add-post', authorization, addNewPost);
 
 module.exports = router;

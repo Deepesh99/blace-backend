@@ -29,7 +29,9 @@ exports.getHome = (req, res) => {
  */
 exports.getUserPosts = (req, res) => {
   // identify user
-  // fetch all blogpost data created by user
+  //const user = await User.findOne({ where: { userId: res.locals.userId } });
+  // fetch all blogpost data created by user 
+  
   // return
 };
 
@@ -40,12 +42,12 @@ exports.getUserPosts = (req, res) => {
  * @returns JSON value with user information
  */
 exports.getUser = async (req, res) => {
-  // identify user
-  //const userId = res.locals.userId;
-  // fetch user info
-  const user = await User.findOne({ where: { userId: res.locals.userId } });
-  // return
-  res.json(user.dataValues);
+  try {
+    const user = await User.findOne({ where: { userId: res.locals.userId } });
+    return res.json(user.dataValues);
+  } catch (err) {
+    return res.status(500).json({ status: false, message: `${err.name}` });
+  }
 };
 
 /**
@@ -54,25 +56,34 @@ exports.getUser = async (req, res) => {
  * @param {*} res
  */
 exports.addNewPost = async (req, res) => {
-  // identify user
   const {
-    title, userId, content, status,
+    title, content, status,
   } = req.body;
 
   try {
-    // create new db item in "blogpost" table
-    // const user = await User.findOne({ where: { userId } });
+    // identify user
+    const user = await User.findOne({ where: { userId: res.locals.userId } });
 
-    await UserPost.create({
-      title,
-      author: 'deepesh',
-      content,
-      status,
-    });
+    // add new data depending on status
+    if (status === 'published') {
+      await UserPost.create({
+        title,
+        author: user.firstName,
+        publishedDate: new Date(),
+        content,
+        status,
+      });
+    } else {
+      await UserPost.create({
+        title,
+        author: user.firstName,
+        content,
+        status,
+      });
+    }
 
-    // return
     return res.status(200).json({ status: true, message: 'Success!' });
   } catch (err) {
-    return res.status(500).json({ status: false, message: 'Server Error' });
+    return res.status(500).json({ status: false, message: `${err.name}` });
   }
 };
