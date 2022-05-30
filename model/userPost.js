@@ -17,7 +17,6 @@ const UserPost = sequelize.define('user-post', {
   },
   publishedDate: {
     type: Sequelize.DATE,
-    defaultValue: new Date(),
   },
   content: {
     type: Sequelize.STRING,
