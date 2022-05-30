@@ -40,7 +40,7 @@ app.use('/', generalRoutes);
  *    database a created new empty tables.
  */
 db
-  //  .sync({ force: true })
+  // .sync({ force: true })
   .sync()
   .then(() => {
     app.listen(3000);
