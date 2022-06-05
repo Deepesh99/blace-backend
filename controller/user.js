@@ -2,22 +2,17 @@ const User = require('../model/user');
 const UserPost = require('../model/userPost');
 
 /**
- * Fetch latest 5 posts from database created by user.
- * If authorized then latest posts of user else home page of website.
+ * Fetch all posts from database published by all user.
  * @param {*} req
  * @param {*} res
  * @returns JSON value with latest 5 blogpost data created by user
  */
-exports.getHome = (req, res) => {
-  // identify user
+exports.getHome = async (req, res) => {
   // fetch latest 5 post created by user from database
+  const post = await UserPost.findAll({ where: { status: 'published' } });
+
   // return
-  res.json({
-    title: 'first post',
-    article: 'this is blog content',
-    createdBy: 'Deepesh',
-    createdDate: '23/04/2022',
-  });
+  res.status(200).json(post);
 };
 
 /**

@@ -8,7 +8,7 @@ const { authorization } = require('../middleware/auth');
 const router = express.Router();
 
 // send homepage data with latest posts
-router.get('/', getHome);
+router.get('/', authorization, getHome);
 
 // show all posts that user has made
 router.get('/:userId/posts', authorization, getUserPosts);
