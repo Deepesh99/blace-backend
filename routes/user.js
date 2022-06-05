@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/', getHome);
 
 // show all posts that user has made
-router.get('/posts', authorization, getUserPosts);
+router.get('/:userId/posts', authorization, getUserPosts);
 
 // show user profile
 router.get('/:userId', authorization, getUser);

@@ -27,12 +27,15 @@ exports.getHome = (req, res) => {
  * @param {*} res
  * @returns JSON value with all blogpost data created by user
  */
-exports.getUserPosts = (req, res) => {
-  // identify user
-  //const user = await User.findOne({ where: { userId: res.locals.userId } });
-  // fetch all blogpost data created by user 
-  
+exports.getUserPosts = async (req, res) => {
+  // identify which users data is asked
+  const { userId } = req.params;
+
+  // fetch all blogpost data created by user
+  const post = await UserPost.findAll({ where: { userId, status: 'published' } });
+
   // return
+  res.status(200).json(post);
 };
 
 /**
@@ -72,6 +75,7 @@ exports.addNewPost = async (req, res) => {
         publishedDate: new Date(),
         content,
         status,
+        userId: user.userId,
       });
     } else {
       await UserPost.create({
@@ -79,6 +83,7 @@ exports.addNewPost = async (req, res) => {
         author: user.firstName,
         content,
         status,
+        userId: user.userId,
       });
     }
 
