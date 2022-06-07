@@ -40,8 +40,9 @@ exports.getUserPosts = async (req, res) => {
  * @returns JSON value with user information
  */
 exports.getUser = async (req, res) => {
+  const { userId } = req.params;
   try {
-    const user = await User.findOne({ where: { userId: res.locals.userId } });
+    const user = await User.findOne({ where: { userId } });
     return res.json(user.dataValues);
   } catch (err) {
     return res.status(500).json({ status: false, message: `${err.name}` });
