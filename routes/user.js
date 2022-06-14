@@ -1,7 +1,7 @@
 const express = require('express');
 
 const {
-  getHome, getUserPosts, getUser, addNewPost,
+  getHome, getUserPosts, getUser, addNewPost, updateUserProfile,
 } = require('../controller/user');
 const { authorization } = require('../middleware/auth');
 
@@ -18,5 +18,8 @@ router.get('/:userId', authorization, getUser);
 
 // add a new post
 router.post('/add-post', authorization, addNewPost);
+
+// update user profile data
+router.post('/:userId/update-profile', authorization, updateUserProfile);
 
 module.exports = router;

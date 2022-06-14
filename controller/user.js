@@ -88,3 +88,38 @@ exports.addNewPost = async (req, res) => {
     return res.status(500).json({ status: false, message: `${err.name}` });
   }
 };
+
+/**
+ * This function takes updates user profile data from profile owner
+ *  and updates data in databse
+ * @param {*} req
+ * @param {*} res
+ * @returns json - status of request
+ */
+exports.updateUserProfile = async (req, res) => {
+  const { userId } = req.params;
+  const { firstName, lastName} = req.body;
+
+  // if another user's data try to change then error
+  if (res.locals.userId.toString() !== userId) {
+    return res.status(401).json({ status: false, message: 'Unauthorized!!' });
+  }
+
+  try {
+    const user = await User.update(
+      { firstName, lastName },
+      { where: { userId: res.locals.userId } },
+    );
+
+    // return update user profile data
+    // TODO: return better data; below is return data
+    // {
+    //   "user": [
+    //     1
+    //   ]
+    // }
+    return res.status(200).json({user});
+  } catch (err) {
+    return res.status(500).json({ status: true, message: `${err.name}` });
+  }
+};
