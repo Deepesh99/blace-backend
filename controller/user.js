@@ -90,15 +90,15 @@ exports.addNewPost = async (req, res) => {
 };
 
 /**
- * This function takes updates user profile data from profile owner
+ * This function takes updated user profile data from profile owner
  *  and updates data in databse
  * @param {*} req
  * @param {*} res
- * @returns json - status of request
+ * @returns json - status of request and updated profile data
  */
 exports.updateUserProfile = async (req, res) => {
   const { userId } = req.params;
-  const { firstName, lastName} = req.body;
+  const { firstName, lastName } = req.body;
 
   // if another user's data try to change then error
   if (res.locals.userId.toString() !== userId) {
@@ -106,20 +106,18 @@ exports.updateUserProfile = async (req, res) => {
   }
 
   try {
+    // Update all data even if it is not changed
+    // All data should be sent from frontend
+    // TODO: mechanism to only update the new data.
     const user = await User.update(
       { firstName, lastName },
       { where: { userId: res.locals.userId } },
     );
 
     // return update user profile data
-    // TODO: return better data; below is return data
-    // {
-    //   "user": [
-    //     1
-    //   ]
-    // }
-    return res.status(200).json({user});
+    const updatedUserProfile = await User.findOne({ where: { userId: user[0] } });
+    return res.status(200).json(updatedUserProfile);
   } catch (err) {
-    return res.status(500).json({ status: true, message: `${err.name}` });
+    return res.status(500).json({ status: false, message: `${err.name}` });
   }
 };
