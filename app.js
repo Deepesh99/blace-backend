@@ -1,6 +1,7 @@
 // npm packages
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 // db config
 const db = require('./util/db');
@@ -26,6 +27,10 @@ const userRoutes = require('./routes/user');
 const generalRoutes = require('./routes/general');
 
 const app = express();
+
+// CORS - now allows all cors
+// TODO: configure cors
+app.use(cors());
 
 // used to parse json data that comes in body of any request
 app.use(bodyParser.json());
