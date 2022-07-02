@@ -1,7 +1,7 @@
 // npm packages
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
+// const cors = require('cors');
 
 // db config
 const db = require('./util/db');
@@ -28,12 +28,18 @@ const generalRoutes = require('./routes/general');
 
 const app = express();
 
-// CORS - now allows all cors
-// TODO: configure cors
-app.use(cors());
 
 // used to parse json data that comes in body of any request
 app.use(bodyParser.json());
+
+// CORS - now allows all cors
+// TODO: configure cors
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 // routing
 app.use('/user', userRoutes);
